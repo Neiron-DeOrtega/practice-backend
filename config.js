@@ -7,4 +7,11 @@ const config = mysql.createConnection({
   password: "Twudrin2"
 });
 
+// const config = mysql.createConnection({
+//   host: "localhost",
+//   user: "root",
+//   database: "inodo",
+//   password: ""
+// });
+
 module.exports = config

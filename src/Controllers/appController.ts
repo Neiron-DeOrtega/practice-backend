@@ -59,6 +59,7 @@ class AppController {
     } 
     
     async addUsers(req: Request, res: Response) {
+      console.log(req.body)
 
         let errors: ErrorList[] = []
 
@@ -82,28 +83,28 @@ class AppController {
               errors.push({
                 id: Math.floor(Math.random() * 10000),
                 errorType: errorType,
-                errorMessage: `Неправильный формат данных: ${string}`
+                errorMessage: `Неправильный формат данных: \n${string}`
               })
             } else if (errorType === 103) {
               // Неправильный формат почты
               errors.push({
                 id: Math.floor(Math.random() * 10000),
                 errorType: errorType,
-                errorMessage: `Неправильный формат почты: ${string}`
+                errorMessage: `Неправильный формат почты: \n${string}`
               })
             } else if (errorType === 104) {
               // Неправильный формат номера
               errors.push({
                 id: Math.floor(Math.random() * 10000),
                 errorType: errorType,
-                errorMessage: `Неправильный формат номера: ${string}`
+                errorMessage: `Неправильный формат номера: \n${string}`
               })
             } else if (errorType === 200) {
               // Возможно неправильно
               errors.push({
                 id: Math.floor(Math.random() * 10000),
                 errorType: errorType,
-                errorMessage: `Возможно неправильный ввод данных: ${string} | Желаете продолжить?`
+                errorMessage: `Возможно неправильный ввод данных: \n${string} \nЖелаете продолжить?`
               })
             } else if (errorType === 201) {
               errors.push({
@@ -131,7 +132,7 @@ class AppController {
             const parts = line.split(' ');
             if (parts.length < 5) {
                 addError(102, errors, line)
-            } else if (parts.length > 5) {
+            } else if (parts.length > 5 && !req.body.isChecked) {
                 addError(200, errors, line)
             }
             let lastName: string;
@@ -149,7 +150,6 @@ class AppController {
                 }
                 let query = "SELECT * FROM mdl_user WHERE email = ?"
                 const isUserExist: any[] = await new Promise((resolve, reject) => {
-                  console.log("Executing query:", query, "with email:", email);
 
                   config.query(query, email, (error: any, results: any) => {
                       if (error) {
@@ -161,7 +161,6 @@ class AppController {
                       }
                   });
                 });
-                console.log(isUserExist.length > 0)
                 if (isUserExist.length > 0) {
                   addError(201, errors, line)
                   parts.length = 0
@@ -184,7 +183,6 @@ class AppController {
                         parts.push('Преподаватель');
                         parts.push('editingteacher');
                     }
-                    console.log(parts)
                     let strResult = [lastName!, ...parts]
                     return strResult.join(';');
                 // }
@@ -201,11 +199,11 @@ class AppController {
         let result = superNewString.filter((line => line.trim() !== '')).join('\n')
         console.log(result)
 
-        fs.writeFile('output.csv', result, (err: any) => {
-          if (err) throw err;
-          console.log('The file has been saved!');
-        }); 
         if (errors.length === 0) {
+          fs.writeFile('output.csv', result, (err: any) => {
+            if (err) throw err;
+            console.log('The file has been saved!');
+          }); 
           addError(300, errors)
         }
         res.send(errors)
