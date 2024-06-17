@@ -1,3 +1,3 @@
-lastname;firstname;password;email;username;course1;cohort1;department;role
-Цывунин;Иван Иванович;P@s*w0rd;example@gmail.com;89123456789;3-001;Преподаватель;Преподаватель;editingteacher
-Егоров;Егор Егорович;P@s*w0rd;another@mail.ru;89229001234;3-001;Преподаватель;Преподаватель;editingteacher
+lastname;firstname;password;email;username;course1;cohort1;department
+Иванов;Иван Маров Иванович;P@s*w0rd;example@gmail.com;89123456789;1-003;Слушатель;Слушатель
+Егоров;Егор Егорович;P@s*w0rd;another@mail.ru;89229001234;1-003;Слушатель;Слушатель

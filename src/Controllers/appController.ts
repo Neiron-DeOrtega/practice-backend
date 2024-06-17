@@ -1,4 +1,4 @@
-const config = require('../../config')
+const config = require('../../../config')
 import { Request, Response } from "express";
 const fs = require('fs')
 
@@ -130,13 +130,15 @@ class AppController {
         console.log(peopleArray)
         const superNewString = await Promise.all(peopleArray.map(async (line: string, i: number) => {
             const parts = line.split(' ');
-            if (parts.length < 5) {
-                addError(102, errors, line)
-            } else if (parts.length > 5 && !req.body.isChecked) {
-                addError(200, errors, line)
-            }
             let lastName: string;
             try {
+                if (parts.length > 5 && !req.body.isChecked) {
+                  addError(200, errors, line)
+                }
+                if (parts.length < 5) {
+                    addError(102, errors, line)
+                    throw "Ошибка формата данных"
+                }
                 parts[0] = parts[0][0].toUpperCase() + parts[0].slice(1);
                 const email = parts.find(part => part.includes('@') && part.includes('.'))
                 if (!email) {
